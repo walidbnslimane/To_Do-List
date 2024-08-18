@@ -102,7 +102,7 @@ function addTask() {
 
     const pathParts = taskValue.split('/');
     const taskName = pathParts.pop();
-    
+
     let currentFolder = folderList;
 
     pathParts.forEach(folderName => {
@@ -120,16 +120,20 @@ function addTask() {
         const taskItem = document.createElement('li');
         taskItem.textContent = taskName;
 
-        const span = document.createElement("span");
-        span.innerHTML = "\u00d7";
-        taskItem.appendChild(span);
+        if (taskName.includes(':')) {
+            taskItem.classList.add('centered-task');
+        } else {
+            const span = document.createElement("span");
+            span.innerHTML = "\u00d7";
+            taskItem.appendChild(span);
+
+            span.addEventListener('click', () => {
+                taskItem.remove();
+                saveTasks();
+            });
+        }
 
         currentFolder.appendChild(taskItem);
-
-        span.addEventListener('click', () => {
-            taskItem.remove();
-            saveTasks();
-        });
     }
 
     taskInput.value = '';
